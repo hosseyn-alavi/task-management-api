@@ -1,4 +1,12 @@
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { Role } from '../user.entity';
 
 export class AuthCredentialsDto {
   @IsString()
@@ -13,4 +21,7 @@ export class AuthCredentialsDto {
     message: 'password is week',
   })
   password: string;
+
+  @IsEnum(Role)
+  role: Role;
 }
