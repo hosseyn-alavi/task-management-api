@@ -1,5 +1,13 @@
+import { Exclude } from 'class-transformer';
 import { Task } from './../tasks/task.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+} from 'typeorm';
+import { Organisation } from 'src/organisation/organisation.entity';
 
 @Entity()
 export class User {
@@ -12,13 +20,13 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   name?: string;
 
   @Column()
   role: Role;
 
-  @Column()
+  @Column({ nullable: true })
   avatar?: string;
 
   @Column()
@@ -26,6 +34,12 @@ export class User {
 
   @Column()
   isActive: boolean;
+
+  @ManyToOne((_type) => Organisation, (organisation) => organisation.users, {
+    eager: false,
+  })
+  @Exclude({ toPlainOnly: true })
+  organisation?: User;
 
   @OneToMany((_type) => Task, (task) => task.user, { eager: true })
   tasks: Task[];

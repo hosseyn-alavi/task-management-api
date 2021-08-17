@@ -1,6 +1,7 @@
 import {
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
@@ -9,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  private logger = new Logger('UserRepository');
   async createUser(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, password, role } = authCredentialsDto;
 
@@ -29,6 +31,7 @@ export class UserRepository extends Repository<User> {
         //duplicate error in postgres
         throw new ConflictException('Username already exist');
       } else {
+        this.logger.error(error);
         throw new InternalServerErrorException();
       }
     }
