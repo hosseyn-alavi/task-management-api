@@ -9,13 +9,13 @@ export class Organisation {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   website: string;
 
-  @Column()
+  @Column({ nullable: true })
   logo: string;
 
   @OneToMany((_type) => User, (user) => user.organisation, { eager: true })

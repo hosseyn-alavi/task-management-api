@@ -20,13 +20,13 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   name?: string;
 
   @Column()
   role: Role;
 
-  @Column()
+  @Column({ nullable: true })
   avatar?: string;
 
   @Column()
@@ -39,7 +39,7 @@ export class User {
     eager: false,
   })
   @Exclude({ toPlainOnly: true })
-  organisation: User;
+  organisation?: User;
 
   @OneToMany((_type) => Task, (task) => task.user, { eager: true })
   tasks: Task[];
