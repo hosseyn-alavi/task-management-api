@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { CreateTaskDto } from './dto/create-task-dto';
@@ -20,6 +21,7 @@ import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
+@ApiTags('Tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
@@ -32,11 +34,18 @@ export class TasksController {
   }
 
   @Get('/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'The found record',
+    type: Task,
+  })
   getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
     return this.tasksService.getTaskById(id, user);
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create task' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   createTask(
     @Body() createTaskDto: CreateTaskDto,
     @GetUser() user: User,

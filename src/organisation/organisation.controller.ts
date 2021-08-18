@@ -5,8 +5,10 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateOrganisationDto } from './dto/create-organisation-dto';
 import { OrganisationService } from './organisation.service';
 import { Organisation } from './organisation.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard())
+@ApiTags('Organisations')
 @Controller('organisation')
 export class OrganisationController {
   constructor(private organisationService: OrganisationService) {}
