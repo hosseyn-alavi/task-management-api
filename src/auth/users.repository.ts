@@ -4,14 +4,16 @@ import {
   Logger,
 } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthCredentialsSignUpDto } from './dto/auth-credentials.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   private logger = new Logger('UserRepository');
-  async createUser(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  async createUser(
+    authCredentialsDto: AuthCredentialsSignUpDto,
+  ): Promise<void> {
     const { username, password, role } = authCredentialsDto;
 
     const salt = await bcrypt.genSalt();
