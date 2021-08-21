@@ -5,7 +5,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateOrganisationDto } from './dto/create-organisation-dto';
 import { OrganisationService } from './organisation.service';
 import { Organisation } from './organisation.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard())
 @ApiTags('Organisations')
@@ -13,6 +13,10 @@ import { ApiTags } from '@nestjs/swagger';
 export class OrganisationController {
   constructor(private organisationService: OrganisationService) {}
 
+  @ApiResponse({
+    status: 201,
+    description: 'Organisation created',
+  })
   @Post()
   createOrganisation(
     @Body() createOrganisationDto: CreateOrganisationDto,

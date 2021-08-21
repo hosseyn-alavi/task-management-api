@@ -1,8 +1,8 @@
+import { GetTaskResDto } from './../tasks/dto/get-task-dto';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { User } from './user.entity';
 
 export const GetUser = createParamDecorator(
-  (_data, ctx: ExecutionContext): User => {
+  (_data, ctx: ExecutionContext): GetTaskResDto => {
     const req = ctx.switchToHttp().getRequest();
     return req.user;
   },

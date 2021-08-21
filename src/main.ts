@@ -11,6 +11,10 @@ async function bootstrap() {
     .setTitle('Task management application')
     .setDescription('The task management API description')
     .setVersion('1.0')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'accessToken',
+    )
     .addTag('Auth')
     .addTag('Tasks')
     .addTag('Organisations')

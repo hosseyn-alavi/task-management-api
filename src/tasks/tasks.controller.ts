@@ -1,3 +1,5 @@
+import { GetTaskResDto } from './dto/get-task-dto';
+import { User } from 'src/auth/user.entity';
 import {
   Body,
   Controller,
@@ -10,13 +12,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { User } from 'src/auth/user.entity';
-import { CreateTaskDto } from './dto/create-task-dto';
+import { CreateTaskReqDto, CreateTaskResDto } from './dto/create-task-dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter-dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status-dto';
-import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -25,11 +25,16 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @ApiResponse({
+    status: 200,
+    description: 'The found records',
+  })
+  @ApiBearerAuth('accessToken')
   @Get()
   getTasks(
     @Query() filterDto: GetTasksFilterDto,
     @GetUser() user: User,
-  ): Promise<Task[]> {
+  ): Promise<GetTaskResDto[]> {
     return this.tasksService.getTasks(filterDto, user);
   }
 
@@ -37,22 +42,34 @@ export class TasksController {
   @ApiResponse({
     status: 200,
     description: 'The found record',
-    type: Task,
+    type: GetTaskResDto,
   })
-  getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
+  @ApiBearerAuth('accessToken')
+  getTaskById(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<GetTaskResDto> {
     return this.tasksService.getTaskById(id, user);
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create task' })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiBearerAuth('accessToken')
+  @ApiResponse({
+    status: 201,
+    description: 'Task created',
+    type: CreateTaskReqDto,
+  })
   createTask(
-    @Body() createTaskDto: CreateTaskDto,
+    @Body() CreateTaskReqDto: CreateTaskReqDto,
     @GetUser() user: User,
-  ): Promise<Task> {
-    return this.tasksService.createTask(createTaskDto, user);
+  ): Promise<CreateTaskResDto> {
+    return this.tasksService.createTask(CreateTaskReqDto, user);
   }
 
+  @ApiBearerAuth('accessToken')
+  @ApiResponse({
+    status: 200,
+  })
   @Delete('/:id')
   deleteTaskById(
     @Param('id') id: string,
@@ -61,12 +78,16 @@ export class TasksController {
     return this.tasksService.deleteTaskById(id, user);
   }
 
+  @ApiBearerAuth('accessToken')
+  @ApiResponse({
+    status: 200,
+  })
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
     @GetUser() user: User,
-  ): Promise<Task> {
+  ): Promise<GetTaskResDto> {
     const { status } = updateTaskStatusDto;
     return this.tasksService.updateTaskStatus(id, status, user);
   }
