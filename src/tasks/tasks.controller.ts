@@ -12,7 +12,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateTaskReqDto, CreateTaskResDto } from './dto/create-task-dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter-dto';
@@ -25,10 +30,7 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  @ApiResponse({
-    status: 200,
-    description: 'The found records',
-  })
+  @ApiOkResponse()
   @ApiBearerAuth('accessToken')
   @Get()
   getTasks(
@@ -39,11 +41,7 @@ export class TasksController {
   }
 
   @Get('/:id')
-  @ApiResponse({
-    status: 200,
-    description: 'The found record',
-    type: GetTaskResDto,
-  })
+  @ApiOkResponse()
   @ApiBearerAuth('accessToken')
   getTaskById(
     @Param('id') id: string,
@@ -54,22 +52,16 @@ export class TasksController {
 
   @Post()
   @ApiBearerAuth('accessToken')
-  @ApiResponse({
-    status: 201,
-    description: 'Task created',
-    type: CreateTaskReqDto,
-  })
+  @ApiNoContentResponse()
   createTask(
-    @Body() CreateTaskReqDto: CreateTaskReqDto,
+    @Body() createTaskReqDto: CreateTaskReqDto,
     @GetUser() user: User,
   ): Promise<CreateTaskResDto> {
-    return this.tasksService.createTask(CreateTaskReqDto, user);
+    return this.tasksService.createTask(createTaskReqDto, user);
   }
 
   @ApiBearerAuth('accessToken')
-  @ApiResponse({
-    status: 200,
-  })
+  @ApiOkResponse()
   @Delete('/:id')
   deleteTaskById(
     @Param('id') id: string,
@@ -79,9 +71,7 @@ export class TasksController {
   }
 
   @ApiBearerAuth('accessToken')
-  @ApiResponse({
-    status: 200,
-  })
+  @ApiOkResponse()
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
