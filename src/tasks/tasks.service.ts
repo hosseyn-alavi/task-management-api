@@ -18,7 +18,7 @@ export class TasksService {
     user: User,
   ): Promise<GetTaskResDto[]> {
     const tasks = await this.taskRepository.getTasks(filterDto, user);
-    const mappedTasks = tasks.map((task) => ({
+    const mappedTasks: GetTaskResDto[] = tasks.map((task) => ({
       id: task.id,
       title: task.title,
       description: task.description,
