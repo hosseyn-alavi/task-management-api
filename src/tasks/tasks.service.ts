@@ -13,8 +13,20 @@ export class TasksService {
     @InjectRepository(TaskRepository) private taskRepository: TaskRepository,
   ) {}
 
-  getTasks(filterDto: GetTasksFilterDto, user: User): Promise<GetTaskResDto[]> {
-    return this.taskRepository.getTasks(filterDto, user);
+  async getTasks(
+    filterDto: GetTasksFilterDto,
+    user: User,
+  ): Promise<GetTaskResDto[]> {
+    const tasks = await this.taskRepository.getTasks(filterDto, user);
+    const mappedTasks = tasks.map((task) => ({
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      user: task.user,
+    }));
+
+    return mappedTasks;
   }
 
   async getTaskById(id: string, user: User) {
@@ -25,11 +37,18 @@ export class TasksService {
     return task;
   }
 
-  createTask(
+  async createTask(
     createTaskDto: CreateTaskReqDto,
     user: User,
   ): Promise<CreateTaskResDto> {
-    return this.taskRepository.createTask(createTaskDto, user);
+    const task = await this.taskRepository.createTask(createTaskDto, user);
+    return {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      user: task.user,
+    };
   }
 
   async deleteTaskById(id: string, user: User): Promise<void> {
@@ -49,6 +68,12 @@ export class TasksService {
 
     await this.taskRepository.save(task);
 
-    return task;
+    return {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      user: task.user,
+    };
   }
 }
