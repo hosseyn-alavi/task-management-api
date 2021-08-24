@@ -9,13 +9,13 @@ import {
 import { Role } from '../user.entity';
 
 export class AuthCredentialsDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'hosseyn0' })
   @IsString()
   @MinLength(8)
   @MaxLength(20)
   username: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'passworD1' })
   @IsString()
   @MinLength(8)
   @MaxLength(32)

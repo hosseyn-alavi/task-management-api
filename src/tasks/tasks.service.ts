@@ -23,7 +23,6 @@ export class TasksService {
       title: task.title,
       description: task.description,
       status: task.status,
-      user: task.user,
     }));
 
     return mappedTasks;
@@ -47,7 +46,6 @@ export class TasksService {
       title: task.title,
       description: task.description,
       status: task.status,
-      user: task.user,
     };
   }
 
@@ -73,7 +71,6 @@ export class TasksService {
       title: task.title,
       description: task.description,
       status: task.status,
-      user: task.user,
     };
   }
 }

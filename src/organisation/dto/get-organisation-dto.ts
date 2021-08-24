@@ -1,3 +1,5 @@
+import { User } from 'src/auth/user.entity';
+
 export class GetOrganisationResDto {
   id: string;
 
@@ -8,4 +10,6 @@ export class GetOrganisationResDto {
   website: string;
 
   logo: string;
+
+  users: Pick<User, 'name' | 'id' | 'username'>[];
 }
