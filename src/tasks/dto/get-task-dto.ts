@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetUserResDto } from 'src/auth/dto/get-user-dto';
 
 export class GetTaskResDto {
   @ApiProperty({
@@ -21,6 +20,4 @@ export class GetTaskResDto {
     example: 'TODO',
   })
   status: string;
-
-  user: GetUserResDto;
 }

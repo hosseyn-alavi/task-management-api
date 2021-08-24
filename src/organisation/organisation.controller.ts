@@ -1,11 +1,16 @@
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/auth/user.entity';
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateOrganisationDto } from './dto/create-organisation-dto';
 import { OrganisationService } from './organisation.service';
-import { Organisation } from './organisation.entity';
-import { ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { GetOrganisationResDto } from './dto/get-organisation-dto';
 
 @UseGuards(AuthGuard())
 @ApiTags('Organisations')
@@ -13,12 +18,20 @@ import { ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
 export class OrganisationController {
   constructor(private organisationService: OrganisationService) {}
 
+  @ApiOkResponse()
+  @ApiBearerAuth('accessToken')
+  @Get('/:id')
+  getOrganisationById(@Param('id') id: string): Promise<GetOrganisationResDto> {
+    return this.organisationService.getOrganisationById(id);
+  }
+
   @ApiNoContentResponse()
+  @ApiBearerAuth('accessToken')
   @Post()
   createOrganisation(
     @Body() createOrganisationDto: CreateOrganisationDto,
     @GetUser() user: User,
-  ): Promise<Organisation> {
+  ): Promise<GetOrganisationResDto> {
     return this.organisationService.createOrganisation(
       createOrganisationDto,
       user,
