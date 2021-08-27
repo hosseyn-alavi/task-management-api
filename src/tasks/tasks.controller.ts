@@ -33,52 +33,52 @@ export class TasksController {
   @ApiOkResponse()
   @ApiBearerAuth('accessToken')
   @Get()
-  getTasks(
+  async getTasks(
     @Query() filterDto: GetTasksFilterDto,
     @GetUser() user: User,
   ): Promise<GetTaskResDto[]> {
-    return this.tasksService.getTasks(filterDto, user);
+    return await this.tasksService.getTasks(filterDto, user);
   }
 
   @Get('/:id')
   @ApiOkResponse()
   @ApiBearerAuth('accessToken')
-  getTaskById(
+  async getTaskById(
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<GetTaskResDto> {
-    return this.tasksService.getTaskById(id, user);
+    return await this.tasksService.getTaskById(id, user);
   }
 
   @Post()
   @ApiBearerAuth('accessToken')
   @ApiNoContentResponse()
-  createTask(
+  async createTask(
     @Body() createTaskReqDto: CreateTaskReqDto,
     @GetUser() user: User,
   ): Promise<CreateTaskResDto> {
-    return this.tasksService.createTask(createTaskReqDto, user);
+    return await this.tasksService.createTask(createTaskReqDto, user);
   }
 
   @ApiBearerAuth('accessToken')
   @ApiOkResponse()
   @Delete('/:id')
-  deleteTaskById(
+  async deleteTaskById(
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<void> {
-    return this.tasksService.deleteTaskById(id, user);
+    return await this.tasksService.deleteTaskById(id, user);
   }
 
   @ApiBearerAuth('accessToken')
   @ApiOkResponse()
   @Patch('/:id/status')
-  updateTaskStatus(
+  async updateTaskStatus(
     @Param('id') id: string,
     @Body() updateTaskStatusDto: UpdateTaskStatusDto,
     @GetUser() user: User,
   ): Promise<GetTaskResDto> {
     const { status } = updateTaskStatusDto;
-    return this.tasksService.updateTaskStatus(id, status, user);
+    return await this.tasksService.updateTaskStatus(id, status, user);
   }
 }

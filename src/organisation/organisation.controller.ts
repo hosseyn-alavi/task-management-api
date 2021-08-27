@@ -21,18 +21,20 @@ export class OrganisationController {
   @ApiOkResponse()
   @ApiBearerAuth('accessToken')
   @Get('/:id')
-  getOrganisationById(@Param('id') id: string): Promise<GetOrganisationResDto> {
-    return this.organisationService.getOrganisationById(id);
+  async getOrganisationById(
+    @Param('id') id: string,
+  ): Promise<GetOrganisationResDto> {
+    return await this.organisationService.getOrganisationById(id);
   }
 
   @ApiNoContentResponse()
   @ApiBearerAuth('accessToken')
   @Post()
-  createOrganisation(
+  async createOrganisation(
     @Body() createOrganisationDto: CreateOrganisationDto,
     @GetUser() user: User,
   ): Promise<GetOrganisationResDto> {
-    return this.organisationService.createOrganisation(
+    return await this.organisationService.createOrganisation(
       createOrganisationDto,
       user,
     );
