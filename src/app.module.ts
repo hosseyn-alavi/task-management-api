@@ -7,16 +7,7 @@ import { OrganisationModule } from './organisation/organisation.module';
 @Module({
   imports: [
     TasksModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'task-management',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(),
     AuthModule,
     OrganisationModule,
   ],
