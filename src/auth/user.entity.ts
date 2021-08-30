@@ -39,7 +39,7 @@ export class User {
     eager: false,
   })
   @Exclude({ toPlainOnly: true })
-  organisation?: User;
+  organisation?: Organisation;
 
   @OneToMany((_type) => Task, (task) => task.user, { eager: true })
   tasks: Task[];
