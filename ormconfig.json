@@ -5,7 +5,7 @@
     "host": "localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "postgres",
+    "password": "password",
     "database": "task-management",
     "entities": ["dist/**/*.entity{ .ts,.js}"],
     "synchronize": false,
